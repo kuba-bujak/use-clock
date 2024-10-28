@@ -1,23 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import SimpleTicker from "./SimpleTicker";
+import IntervalTicker from "./IntervalTicker";
+import Ticker from "./Ticker";
+import { useState } from "react";
 
 function App() {
+  const [hidden, setHidden] = useState(false);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/simple" element={<SimpleTicker />} />
+          <Route path="/interval" element={<IntervalTicker />} />
+          <Route
+            path="/clocks"
+            element={
+              <>
+                <h1>Zegary</h1>
+                <button onClick={() => setHidden((h) => !h)}>
+                  {hidden ? "Pokaż" : "Ukryj"}
+                </button>
+                {!hidden && <Ticker />}
+              </>
+            }
+          />
+        </Routes>
+
+        {/* Nawigacja powinna być poza <Routes> */}
+        <ul>
+          <li>
+            <Link to="/simple">Prosty zegar</Link>
+          </li>
+          <li>
+            <Link to="/interval">Odliczanie dłuższych okresów</Link>
+          </li>
+          <li>
+            <Link to="/clocks">Kolekcja zegarów</Link>
+          </li>
+        </ul>
+      </BrowserRouter>
     </div>
   );
 }
